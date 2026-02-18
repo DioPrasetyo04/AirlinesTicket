@@ -18,6 +18,7 @@ use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\TrashedFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -25,7 +26,7 @@ class PromoCodeResource extends Resource
 {
     protected static ?string $model = PromoCode::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-tag';
 
     public static function form(Form $form): Form
     {
@@ -56,7 +57,8 @@ class PromoCodeResource extends Resource
                 ToggleColumn::make('is_used')->label('Used'),
             ])
             ->filters([
-                //
+                TrashedFilter::make(),
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
