@@ -84,14 +84,14 @@ class FlightResource extends Resource
                 }),
             ])
             ->filters([
-                TrashedFilter::make(),
+                // TrashedFilter::make(),
             ])
             ->actions([
                 EditAction::make(),
                 ViewAction::make(),
                 DeleteAction::make(),
-                RestoreAction::make(),
-                ForceDeleteAction::make(),
+                // RestoreAction::make(),
+                // ForceDeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -13,10 +13,12 @@
 </head>
 <body>
 
+    @yield('background');
+
     {{-- include berfungsi untuk menambah konten html terpisah dalam layouts seperti navbar agar tetep otomatis di pake oleh child component manapun --}}
     @include('components.navbar');
 
-    {{-- inject all content html redirect this --}}
+    {{-- inject all content html dari child component redirect this --}}
     @yield('content')
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
