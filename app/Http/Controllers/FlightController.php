@@ -32,6 +32,19 @@ class FlightController extends Controller
         ]);
 
         $airlines = $this->airlineRepository->getAllAirlines();
-        return view('pages.flight.index', compact('flights', 'airlines'));
+
+        // menggunakan map dan unique id untuk mendapatkan valuenya
+        $flightFacilities = $flights->flatMap(function ($flight) {
+            return $flight->classes->flatMap(function ($class) {
+                return $class->facilities;
+            });
+        })->unique('id')->values();
+
+        // menghitung semua jumlah transit
+        $transitCounts = $flights->map(function ($flight) {
+            return max($flight->segments->count() - 2, 0);
+        })->unique()->sort()->values();
+
+        return view('pages.flight.index', compact('flights', 'airlines', 'flightFacilities', 'transitCounts'));
     }
 }

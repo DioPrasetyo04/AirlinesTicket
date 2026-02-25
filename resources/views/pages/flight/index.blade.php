@@ -11,53 +11,71 @@
 @section('content')
         <main class="relative flex flex-col w-full max-w-[1280px] px-[75px] mx-auto mt-[50px] mb-[62px]">
         <h1 class="font-extrabold text-[50px] leading-[75px]">Flight Search</h1>
-        <div class="flex w-fit rounded-[20px] p-5 gap-[30px] bg-white mt-5">
-            @if (request()->departure)
-                <div class="flex flex-col gap-[2px]">
-                    <p class="text-sm text-garuda-grey">Departure</p>
-                    <p class="font-semibold text-lg">{{ request()->departure }}</p>
-                </div>
-            @endif
-            @if (request()->arrival)
+        @if(request()->departure || request()->arrival || request()->date || request()->quantity)
+            <div class="flex w-fit rounded-[20px] p-5 gap-[30px] bg-white mt-5">
+                @if (request()->departure)
+                    <div class="flex flex-col gap-[2px]">
+                        <p class="text-sm text-garuda-grey">Departure</p>
+                        <p class="font-semibold text-lg">{{ request()->departure }}</p>
+                    </div>
+                @else
+                     <div class="flex flex-col gap-[2px]">
+                        <p class="text-sm text-garuda-grey">Departure</p>
+                        <p class="font-semibold text-lg">-</p>
+                    </div>
+                @endif
+                @if (request()->arrival)
+                    <div class="flex flex-col gap-[2px]">
+                        <p class="text-sm text-garuda-grey">Arrival</p>
+                        <p class="font-semibold text-lg">{{ request()->arrival }}</p>
+                    </div>
+                @else
                 <div class="flex flex-col gap-[2px]">
                     <p class="text-sm text-garuda-grey">Arrival</p>
-                    <p class="font-semibold text-lg">{{ request()->arrival }}</p>
+                    <p class="font-semibold text-lg">-</p>
                 </div>
-            @endif
-            @if (request()->date)
-                <div class="flex flex-col gap-[2px]">
-                    <p class="text-sm text-garuda-grey">Date</p>
-                    <p class="font-semibold text-lg">{{ request()->date }}</p>
-                </div>
-            @endif
-            @if (request()->quantity)
-                <div class="flex flex-col gap-[2px]">
-                    <p class="text-sm text-garuda-grey">Quantity</p>
-                    <p class="font-semibold text-lg">{{ request()->quantity }} people</p>
-                </div>
-            @endif
-        </div>
+                @endif
+                @if (request()->date)
+                    <div class="flex flex-col gap-[2px]">
+                        <p class="text-sm text-garuda-grey">Date</p>
+                        <p class="font-semibold text-lg">{{ request()->date }}</p>
+                    </div>
+                @else
+                    <div class="flex flex-col gap-[2px]">
+                        <p class="text-sm text-garuda-grey">Arrival</p>
+                        <p class="font-semibold text-lg">-</p>
+                    </div>
+                @endif
+                @if (request()->quantity)
+                    <div class="flex flex-col gap-[2px]">
+                        <p class="text-sm text-garuda-grey">Quantity</p>
+                        <p class="font-semibold text-lg">{{ request()->quantity }} people</p>
+                    </div>
+                @else
+                    <div class="flex flex-col gap-[2px]">
+                        <p class="text-sm text-garuda-grey">Arrival</p>
+                        <p class="font-semibold text-lg">-</p>
+                    </div>
+                @endif
+            </div>
+        @endif
         <div class="flex gap-[26px] mt-[30px]">
             <form id="Filter" action="#"
                 class="flex flex-col w-[320px] shrink-0 h-fit rounded-3xl border border-[#E8EFF7] p-5 gap-5 bg-white">
                 <h2 class="font-bold text-xl leading-[30px]">Filters Ticket</h2>
                 <div id="Flights" class="flex flex-col gap-4">
                     <p class="font-semibold">Flights</p>
-                    <label class="flex items-center gap-[10px]">
-                        <input type="checkbox" name="flights" id=""
+                    @foreach ($transitCounts as $transit)
+                        <label class="flex items-center gap-[10px]">
+                        <input type="checkbox" name="flights" value="{{ $transit }}"
                             class="flex w-6 h-6 shrink-0 appearance-none outline-none rounded-lg ring-1 ring-garuda-black border border-white checked:bg-black checked:border-[5px]">
-                        <span class="font-semibold">Direct Flight</span>
+                        @if ($transit == 0)
+                            <span class="font-semibold">Direct Flight</span>
+                        @else
+                            <span class="font-semibold">Transit {{ $transit }}x</span>
+                        @endif
                     </label>
-                    <label class="flex items-center gap-[10px]">
-                        <input type="checkbox" name="flights" id=""
-                            class="flex w-6 h-6 shrink-0 appearance-none outline-none rounded-lg ring-1 ring-garuda-black border border-white checked:bg-black checked:border-[5px]">
-                        <span class="font-semibold">Transit 1x</span>
-                    </label>
-                    <label class="flex items-center gap-[10px]">
-                        <input type="checkbox" name="flights" id=""
-                            class="flex w-6 h-6 shrink-0 appearance-none outline-none rounded-lg ring-1 ring-garuda-black border border-white checked:bg-black checked:border-[5px]">
-                        <span class="font-semibold">Transit 2x</span>
-                    </label>
+                    @endforeach
                 </div>
                 <hr class="border-[#E8EFF7]">
                 <div id="Airlines" class="flex flex-col gap-4">
@@ -76,37 +94,17 @@
                 </div>
                 <hr class="border-[#E8EFF7]">
                 <div id="Facilities" class="flex flex-col gap-4">
+                    @if($flightFacilities)
                     <p class="font-semibold">Facilities</p>
-                    <label class="flex items-center gap-[10px]">
-                        <input type="checkbox" name="facilities" id=""
-                            class="flex w-6 h-6 shrink-0 appearance-none outline-none rounded-lg ring-1 ring-garuda-black border border-white checked:bg-black checked:border-[5px]">
-                        <img src="assets/images/icons/box-black.svg" alt="icon">
-                        <span class="font-semibold">Baggage</span>
-                    </label>
-                    <label class="flex items-center gap-[10px]">
-                        <input type="checkbox" name="facilities" id=""
-                            class="flex w-6 h-6 shrink-0 appearance-none outline-none rounded-lg ring-1 ring-garuda-black border border-white checked:bg-black checked:border-[5px]">
-                        <img src="assets/images/icons/video-play-black.svg" alt="icon">
-                        <span class="font-semibold">Entertainment</span>
-                    </label>
-                    <label class="flex items-center gap-[10px]">
-                        <input type="checkbox" name="facilities" id=""
-                            class="flex w-6 h-6 shrink-0 appearance-none outline-none rounded-lg ring-1 ring-garuda-black border border-white checked:bg-black checked:border-[5px]">
-                        <img src="assets/images/icons/electricity-black.svg" alt="icon">
-                        <span class="font-semibold">USB C and Port</span>
-                    </label>
-                    <label class="flex items-center gap-[10px]">
-                        <input type="checkbox" name="facilities" id=""
-                            class="flex w-6 h-6 shrink-0 appearance-none outline-none rounded-lg ring-1 ring-garuda-black border border-white checked:bg-black checked:border-[5px]">
-                        <img src="assets/images/icons/wifi-black.svg" alt="icon">
-                        <span class="font-semibold">Wi-Fi Onboard</span>
-                    </label>
-                    <label class="flex items-center gap-[10px]">
-                        <input type="checkbox" name="facilities" id=""
-                            class="flex w-6 h-6 shrink-0 appearance-none outline-none rounded-lg ring-1 ring-garuda-black border border-white checked:bg-black checked:border-[5px]">
-                        <img src="assets/images/icons/coffee-black.svg" alt="icon">
-                        <span class="font-semibold">Heavy Meals</span>
-                    </label>
+                        @foreach ($flightFacilities as $facility)
+                            <label class="flex items-center gap-[10px]">
+                                    <input type="checkbox" name="facilities" id=""
+                                        class="flex w-6 h-6 shrink-0 appearance-none outline-none rounded-lg ring-1 ring-garuda-black border border-white checked:bg-black checked:border-[5px]">
+                                    <img src={{ asset('storage/'.$facility->image) }} alt="icon">
+                                    <span class="font-semibold">{{ $facility->name }}</span>
+                                </label>
+                        @endforeach
+                    @endif
                 </div>
             </form>
             <div id="Result" class="flex flex-col w-full h-fit rounded-3xl p-5 gap-5 bg-white">
