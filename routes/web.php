@@ -15,6 +15,7 @@ Route::controller(HomeController::class)->group(function () {
 
 Route::controller(FlightController::class)->group(function () {
     Route::get('/flight', 'index')->name('flight.index');
+    Route::get('/flight/{flightNumber}/choose-tier', 'show')->name('flight.show');
 });
 
 Route::controller(BookingController::class)->group(function () {
