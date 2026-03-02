@@ -73,7 +73,8 @@
                     </div>
                 </div>
             </div>
-            <div id="Tiers" class="grid grid-cols-2 gap-x-[30px]">
+            <form action={{ route('booking', $flight->flight_number) }} id="Tiers" class="grid grid-cols-2 gap-x-[30px]">
+                <input type="hidden" name="flight_class_id" value="" id="flight_class_id">
                @foreach ($flight->classes as $class)
                 <div class="flex flex-col h-fit rounded-[20px] p-5 pb-[30px] gap-5 bg-white">
                 @if ($class->class_type === 'economy')
@@ -96,12 +97,12 @@
                             <p class="font-semibold">{{ $facility->name }}</p>
                         </div>
                     @endforeach
-                    <a href="choose-seats-economy.html" class="w-full rounded-full py-3 px-5 text-center bg-garuda-blue hover:shadow-[0px_14px_30px_0px_#0068FF66] transition-all duration-300">
+                    <button onclick="document.getElementById('flight_class_id').value={{ $class->id }}" class="w-full rounded-full py-3 px-5 text-center bg-garuda-blue hover:shadow-[0px_14px_30px_0px_#0068FF66] transition-all duration-300">
                         <span class="font-semibold text-white">Choose</span>
-                    </a>
+                    </button>
                 </div>
                @endforeach
-            </div>
+            </form>
         </div>
     </main>
 @endsection

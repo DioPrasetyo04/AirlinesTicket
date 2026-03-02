@@ -20,4 +20,6 @@ Route::controller(FlightController::class)->group(function () {
 
 Route::controller(BookingController::class)->group(function () {
     Route::get('/check-booking', 'checkBooking')->name('booking.check');
+    Route::get('flight/booking/{flightNumber}', 'booking')->name('booking');
+    Route::get('flight/booking/{flightNumber}/choose-seat', 'chooseSeat')->name('booking.chooseSeat');
 });
