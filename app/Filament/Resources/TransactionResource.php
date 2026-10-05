@@ -43,18 +43,22 @@ class TransactionResource extends Resource
                     TextInput::make('email'),
                     TextInput::make('phone'),
                     Section::make('Daftar Penumpang')->schema([
-                        Repeater::make('Passengers')->relationship('passengers')->schema([
-                            TextInput::make('seat.name'),
-                            TextInput::make('name'),
-                            TextInput::make('date_of_birth'),
-                            TextInput::make('nationality')
-                        ])->columns(2),
+                        Repeater::make('passengers')
+                            ->relationship('passengers')
+                            ->schema([
+                                Select::make('flight_seat_id')->label('Seat Name')->relationship('seat', 'name')->required(),
+                                TextInput::make('name'),
+                                TextInput::make('date_of_birth'),
+                                TextInput::make('nationality')
+                            ])
+                            ->columns(2)
+                            ->hiddenLabel()
+                            ->collapsible()
+                            ->itemLabel(fn (array $state): ?string => $state['name'] ?? null),
                     ])->columnSpan(2),
                 ])->columns(2),
                 Section::make('Pembayaran')->schema([
-                    TextInput::make('promo.code'),
-                    TextInput::make('promo.discount_type'),
-                    TextInput::make('promo.discount'),
+                    Select::make('promo_code_id')->relationship('promo', 'code'),
                     TextInput::make('payment_status'),
                     TextInput::make('subtotal'),
                     TextInput::make('grandtotal'),

@@ -19,7 +19,15 @@ Route::controller(FlightController::class)->group(function () {
 });
 
 Route::controller(BookingController::class)->group(function () {
-    Route::get('/check-booking', 'checkBooking')->name('booking.check');
+    Route::get('check-booking', 'checkBooking')->name('booking.check');
     Route::get('flight/booking/{flightNumber}', 'booking')->name('booking');
     Route::get('flight/booking/{flightNumber}/choose-seat', 'chooseSeat')->name('booking.chooseSeat');
+    Route::post('flight/booking/{flightNumber}/confirm-seat', 'confirmSeat')->name('booking.confirmSeat');
+    Route::get('flight/booking/{flightNumber}/passenger-details', 'passengerDetails')->name('booking.passengerDetails');
+    Route::post('flight/booking/{flightNumber}/save-passenger-details', 'savePassengerDetails')->name('booking.savePassengerDetails');
+    Route::get('flight/booking/{flightNumber}/checkout', 'checkout')->name('booking.checkout');
+    Route::post('flight/booking/{flightNumber}/payment', 'payment')->name('booking.payment');
+    Route::get('booking-success', 'success')->name('booking.success');
+    Route::get('check-booking', 'checkBooking')->name('booking.check');
+    Route::post('check-booking', 'showBooking')->name('booking.show');
 });
